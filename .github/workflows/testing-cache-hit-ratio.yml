@@ -46,8 +46,8 @@ jobs:
         with:
           pantheon-machine-token: ${{ secrets.PANTHEON_MACHINE_TOKEN }}
 
-      - name: List sites
-        run: terminus site:list
+      # - name: List sites
+      #   run: terminus site:list
 
       # Debugger
       - uses: hmarr/debug-action@v2
