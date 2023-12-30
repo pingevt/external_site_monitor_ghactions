@@ -3,7 +3,7 @@
 set -eo pipefail
 
 PWD_VAR=$(pwd)
-UUID=4a1a251a-53ba-4793-a41f-862eb890934c
+UUID=66f9fa33-db8e-4591-9291-6f4619cb8801
 ENV=live
 
 echo $EXT_DIR
