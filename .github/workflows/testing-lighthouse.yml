@@ -42,8 +42,6 @@ jobs:
       - name: Inputs
         run: |
           echo ${{ inputs.urls }}
-          ls ../github
-          ls ../github/scripts
 
       - name: Generate URLs
         id: urls
