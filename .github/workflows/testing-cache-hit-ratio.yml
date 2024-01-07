@@ -39,6 +39,7 @@ jobs:
       - name: Inputs
         run: |
           echo ${{ inputs.urls }}
+          echo ${{ inputs }}
 
       # Install Terminus.
       - name: Install Terminus
