@@ -38,8 +38,9 @@ jobs:
 
       - name: Inputs
         run: |
-          echo ${{ inputs.urls }}
-          echo ${{ inputs }}
+          echo ${{ inputs.panth-env }}
+          echo ${{ inputs.panth-site }}
+          echo ${{ inputs.callback }}
 
       # Install Terminus.
       - name: Install Terminus
