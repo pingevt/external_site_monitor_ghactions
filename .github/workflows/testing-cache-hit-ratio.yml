@@ -38,9 +38,9 @@ jobs:
 
       - name: Inputs
         run: |
-          echo ${{ inputs.panth-env }}
-          echo ${{ inputs.panth-site }}
-          echo ${{ inputs.callback }}
+          echo ${{ inputs.panth-env }} >> $GITHUB_STEP_SUMMARY
+          echo ${{ inputs.panth-site }} >> $GITHUB_STEP_SUMMARY
+          echo ${{ inputs.callback }} >> $GITHUB_STEP_SUMMARY
 
       # Install Terminus.
       - name: Install Terminus
@@ -63,7 +63,7 @@ jobs:
           CALLBACK: "${{ inputs.callback }}"
         run: |
           terminus env:metrics ${PANTEHON_SITE}.${PANTHEON_ENV} --format=json > cache_hit_ratio.json
-          curl -X POST -H "api-key: $CONNECT_BC_API" -H 'Content-Type: application/json' -d @"cache_hit_ratio.json" $CALLBACK
+          curl -X POST -H "api-key: $CONNECT_BC_API" -H 'Content-Type: application/json' -d @"cache_hit_ratio.json" $CALLBACK  >> $GITHUB_STEP_SUMMARY
 
       # - name: Post Artifacts
       #   timeout-minutes: 15
