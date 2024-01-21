@@ -12,6 +12,10 @@ on:
         description: Directory for uploading artifacts.
         required: false
         type: string
+      full_dir:
+        description: Directory for uploading artifacts.
+        required: false
+        type: string
       result_ids:
         description: Ids of report results. To be passed through
         required: false
@@ -89,11 +93,13 @@ jobs:
           result_ids: '${{ inputs.result_ids }}'
           manifest: '${{ steps.lighthouse.outputs.manifest }}'
           dir: "${{ inputs.dir }}"
+          full_dir: "${{ inputs.full_dir }}"
         with:
           script: |
             let msg = {};
             msg.id_string = process.env.result_ids;
             msg.dir = process.env.dir;
+            msg.full_dir = process.env.full_dir;
             msg.results = JSON.parse(process.env.manifest);
             core.setOutput('callback_msg', msg);
 
