@@ -88,10 +88,12 @@ jobs:
         env:
           result_ids: '${{ inputs.result_ids }}'
           manifest: '${{ steps.lighthouse.outputs.manifest }}'
+          dir: "${{ inputs.dir }}"
         with:
           script: |
             let msg = {};
             msg.id_string = process.env.result_ids;
+            msg.dir = process.env.dir;
             msg.results = JSON.parse(process.env.manifest);
             core.setOutput('callback_msg', msg);
 
