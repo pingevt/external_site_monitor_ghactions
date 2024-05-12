@@ -81,5 +81,30 @@ jobs:
         run: node pa11y.js
 
       # Debugger
-      - name: debugging files
-        run: ls -sla
+      # - name: debugging files
+      #   run: ls -sla
+
+
+
+      - name: Generate Callback Message
+        id: callback_msg
+        uses: actions/github-script@v6
+        env:
+          dir: "${{ inputs.dir }}"
+          full_dir: "${{ inputs.full_dir }}"
+        with:
+          script: |
+            let msg = {};
+            msg.dir = process.env.dir;
+            msg.full_dir = process.env.full_dir;
+            core.setOutput('callback_msg', msg);
+
+      - name: Post Artifacts
+        timeout-minutes: 15
+        env:
+          CONNECT_BC_API: "${{ secrets.CONNECT_BC_KEY }}"
+          EXT_DIR: "${{ inputs.dir }}"
+          CALLBACK: "${{ inputs.callback }}"
+          RESULTS_PATH: "./pa11y"
+          CALLBACK_MSG: ${{ steps.callback_msg.outputs.callback_msg }}
+        run: ./.github/scripts/pa11y-push-to-connect.sh
