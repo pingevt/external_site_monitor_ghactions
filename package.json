@@ -1,0 +1,17 @@
+{
+  "name": "Pa11y",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "pa11y": "^8.0.0"
+  },
+  "dependencies": {
+    "fs-extra": "^11.2.0"
+  }
+}
