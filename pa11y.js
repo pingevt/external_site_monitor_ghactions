@@ -5,7 +5,23 @@ const jsonReporter = require('pa11y/lib/reporters/json');
 
 console.log(process.env);
 
-let urls = process.env.urls;
+// let urls = process.env.urls;
+// console.log(urls);
+// console.log(urls[0]);
+
+let inputUrls = process.env.inputUrls;
+let defaultUrls = process.env.defaultUrls;
+let urls = [];
+
+if (process.env.inputUrls) {
+  urls = inputUrls.split(",");
+
+}
+else {
+  urls = defaultUrls.split(",");
+}
+console.log(urls);
+console.log(urls[0]);
 
 
 

@@ -54,29 +54,30 @@ jobs:
         run: |
           echo ${{ inputs.urls }}
 
-      - name: Generate URLs
-        id: urls
-        uses: actions/github-script@v7
-        env:
-          inputUrls: '${{inputs.urls}}'
-          defaultUrls: '${{env.DEFAULT_URLS}}'
-        with:
-          script: |
-            let urls = "";
-            if (process.env.inputUrls) {
-              urls = process.env.inputUrls.split(",");
-            }
-            else {
-              urls = process.env.defaultUrls.split(",");
-            }
-            core.setOutput('urls', urls);
+      # - name: Generate URLs
+      #   id: urls
+      #   uses: actions/github-script@v7
+      #   env:
+      #     inputUrls: '${{inputs.urls}}'
+      #     defaultUrls: '${{env.DEFAULT_URLS}}'
+      #   with:
+      #     script: |
+      #       let urls = "";
+      #       if (process.env.inputUrls) {
+      #         urls = process.env.inputUrls.split(",");
+      #       }
+      #       else {
+      #         urls = process.env.defaultUrls.split(",");
+      #       }
+      #       core.setOutput('urls', urls);
 
       # Debugger
       - uses: hmarr/debug-action@v3
 
       - name: Run script
         env:
-          urls: '${{ steps.urls.outputs.urls }}'
+          inputUrls: '${{inputs.urls}}'
+          defaultUrls: '${{env.DEFAULT_URLS}}'
         run: node pa11y.js
 
       # Debugger
