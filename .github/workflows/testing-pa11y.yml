@@ -75,7 +75,6 @@ jobs:
       - uses: hmarr/debug-action@v3
 
       - name: Run script
+        env:
+          urls: '${{ steps.urls.outputs.urls }}'
         run: node pa11y.js
-        with:
-          urls: |
-            ${{ steps.urls.outputs.urls }}
