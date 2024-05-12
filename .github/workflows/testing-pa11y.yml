@@ -1,0 +1,75 @@
+name: Lighthouse Testing
+on:
+  # push:
+  workflow_dispatch:
+    inputs:
+      urls:
+        description: URLs to test
+        required: true
+        type: string
+        default: "https://cartermuseum.org/,https://cartermuseum.org/about"
+      dir:
+        description: Directory for uploading artifacts.
+        required: false
+        type: string
+      full_dir:
+        description: Directory for uploading artifacts.
+        required: false
+        type: string
+      result_ids:
+        description: Ids of report results. To be passed through
+        required: false
+        type: string
+      callback:
+        description: Callback url for reporting results.
+        required: false
+        type: string
+
+env:
+  DEFAULT_URLS: "https://peteinge.com,https://peteinge.com/work"
+
+jobs:
+  pa11y:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js 21.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 21.x
+
+      - run: npm ci
+
+      - uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.PANTHEON_SSH_KEY }}
+          config: ${{ secrets.SSH_CONFIG }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+
+      # Debugger
+      # - uses: hmarr/debug-action@v3
+
+      - name: Inputs
+        run: |
+          echo ${{ inputs.urls }}
+
+      - name: Generate URLs
+        id: urls
+        uses: actions/github-script@v6
+        env:
+          inputUrls: '${{inputs.urls}}'
+          defaultUrls: '${{env.DEFAULT_URLS}}'
+        with:
+          script: |
+            let urls = "";
+            if (process.env.inputUrls) {
+              urls = process.env.inputUrls.split(",");
+            }
+            else {
+              urls = process.env.defaultUrls.split(",");
+            }
+            core.setOutput('urls', urls.join('\n'));
+
+      # Debugger
+      - uses: hmarr/debug-action@v3
