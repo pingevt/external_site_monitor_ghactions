@@ -7,6 +7,10 @@ let inputUrls = process.env.inputUrls;
 let defaultUrls = process.env.defaultUrls;
 let urls = [];
 
+console.log(process.env.results_arr);
+const tests = JSON.parse(process.env.results_arr);
+console.log(tests);
+
 if (process.env.inputUrls) {
   urls = inputUrls.split(",");
 
@@ -23,29 +27,35 @@ let default_options = {
   wait: 500
 };
 
-pa11y(urls[0], default_options).then((results) => {
-  console.log(results);
 
-  fs.writeJson('./pa11y/results/jsonReport.json', results, err => {
-    if (err) {
-      console.error(err);
-    } else {
-      // file written successfully
-      console.log("jsonReport.json success");
-    }
-  });
+for (const [resultId, url] of Object.entries(tests)) {
+  console.log(`${resultId}: ${url}`);
 
-  const html = htmlReporter.results(results);
+  pa11y(url, default_options).then((results) => {
+    console.log(results);
 
-  Promise.all([html]).then((values) => {
-
-    fs.writeFile('./pa11y/results/htmlReport.html', values[0], err => {
+    fs.writeJson('./pa11y/results/' + resultId  + '/jsonReport.json', results, err => {
       if (err) {
         console.error(err);
       } else {
         // file written successfully
-        console.log("htmlReport.html success");
+        console.log("jsonReport.json success");
       }
     });
+
+    const html = htmlReporter.results(results);
+
+    Promise.all([html]).then((values) => {
+
+      fs.writeFile('./pa11y/results/' + resultId + '/htmlReport.html', values[0], err => {
+        if (err) {
+          console.error(err);
+        } else {
+          // file written successfully
+          console.log("htmlReport.html success");
+        }
+      });
+    });
   });
-});
+
+}

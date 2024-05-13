@@ -20,6 +20,10 @@ on:
         description: Ids of report results. To be passed through
         required: false
         type: string
+      results_arr:
+        description: JSON string of results -> url array.
+        required: false
+        type: string
       callback:
         description: Callback url for reporting results.
         required: false
@@ -77,6 +81,7 @@ jobs:
       - name: Run script
         env:
           inputUrls: '${{inputs.urls}}'
+          results_arr: '${{inputs.results_arr}}'
           defaultUrls: '${{env.DEFAULT_URLS}}'
         run: node pa11y.js
 
@@ -90,12 +95,16 @@ jobs:
         id: callback_msg
         uses: actions/github-script@v6
         env:
+          result_ids: '${{ inputs.result_ids }}'
+          results_arr: '${{ inputs.results_arr }}'
           dir: "${{ inputs.dir }}"
           full_dir: "${{ inputs.full_dir }}"
         with:
           script: |
             let msg = {};
+            msg.id_string = process.env.result_ids;
             msg.dir = process.env.dir;
+            msg.results_arr = process.env.results_arr;
             msg.full_dir = process.env.full_dir;
             core.setOutput('callback_msg', msg);
 
